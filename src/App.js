@@ -7,7 +7,7 @@ import Cartpage from './pages/Cartpage';
 
 function App() {
   return (
-    <div className="App px-4">
+    <div className="App">
     
       <BrowserRouter>
       <Navbar />

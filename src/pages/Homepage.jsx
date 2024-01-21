@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 const products = [
   { key: 1, name: "Jollof with chicken", cost: 1500 },
@@ -16,14 +16,30 @@ const products = [
 ];
 
 const ProductCard = (props) => {
+  const [counter, setCounter] = useState(false);
+
+  const addToCart = () => {
+    setCounter(true);
+  };
+
   return (
-    <div className="w-1/3 p-4 mx-auto mb-8 bg-white border rounded-lg shadow-md">
+    <div className="w-full sm:w-1/2 md:w-1/3 p-3 mb-8 bg-white border rounded-lg shadow-md relative">
       <div className="flex flex-col items-start">
         <div className="text-lg font-semibold">{props.name}</div>
-        <div className="text-gray-600">Cost: ${props.cost}</div>
+        <div className="text-gray-600">Cost: #{props.cost}</div>
       </div>
-      <div className="mt-4">
-        <button className="justify-end bg-red-500 text-white px-4 py-2 rounded">Add to cart</button>
+      <div className="mt-auto absolute bottom-4 right-4">
+        {counter ? (
+          <div className="flex space-x-2">
+          <button className="bg-red-500 text-white px-4 py-2 rounded">-</button>
+            <button className="bg-green-500 text-white px-4 py-2 rounded">+</button>
+           
+          </div>
+        ) : (
+          <button className="bg-red-500 text-white px-4 py-2 rounded" onClick={addToCart}>
+            Add to cart
+          </button>
+        )}
       </div>
     </div>
   );
@@ -31,7 +47,7 @@ const ProductCard = (props) => {
 
 const Homepage = () => {
   return (
-    <div className="flex flex-wrap justify-center">
+    <div className="flex flex-wrap p-2 md:p-6 justify-center">
       {products.map((content, index) => (
         <ProductCard key={index} name={content.name} cost={content.cost} />
       ))}
