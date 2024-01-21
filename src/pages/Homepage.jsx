@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { Shopcontext } from "../context/Shopcontext";
 
 const products = [
   { key: 1, name: "Jollof with chicken", cost: 1500 },
@@ -16,12 +17,11 @@ const products = [
 ];
 
 const ProductCard = (props) => {
-  const [counter, setCounter] = useState(false);
+    const {counter, setCounter, count, increaseCount, decreaseCount} =useContext(Shopcontext)
 
-  const addToCart = () => {
-    setCounter(true);
-  };
-
+    const addToCart = () => {
+        setCounter(true);
+      };
   return (
     <div className="w-full sm:w-1/2 md:w-1/3 p-3 mb-8 bg-white border rounded-lg shadow-md relative">
       <div className="flex flex-col items-start">
@@ -31,8 +31,9 @@ const ProductCard = (props) => {
       <div className="mt-auto absolute bottom-4 right-4">
         {counter ? (
           <div className="flex space-x-2">
-          <button className="bg-red-500 text-white px-4 py-2 rounded">-</button>
-            <button className="bg-green-500 text-white px-4 py-2 rounded">+</button>
+          <button className="bg-red-500 text-white px-4 py-2 rounded" onClick={decreaseCount}>-</button>
+          <span>{count}</span>
+            <button className="bg-green-500 text-white px-4 py-2 rounded" onClick={increaseCount}>+</button>
            
           </div>
         ) : (
