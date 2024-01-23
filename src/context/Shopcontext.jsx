@@ -4,28 +4,49 @@ export const Shopcontext = createContext(null);
 
 export default function ShopContextProvider(props) {
     const [count, setCount] = useState(1);
-    const [counter, setCounter] = useState(false);
+    const [cartitem, setCartitem] = useState([]);
 
-    const increaseCount = () => {
-        
-        setCount((prev) => prev + 1);
-    };
+    const addTocart = (product) => {
+        const existingItem = cartitem.find((item) => item.product === product);
 
-    const decreaseCount = () => {
-        if (count > 1) {
-            setCount((prev) => prev - 1);
+        if(existingItem) {
+            setCartitem((prevItems) => {
+                return prevItems.map((item) => 
+                    item.product === product ? { ...item, count: item.count+1 } : item
+                );
+            });
         } else {
-            setCounter(false);
+            setCartitem((prevItems) => [...prevItems, {product, count: 1}]);
         }
     };
 
+    const increaseCount = (product) => {
+        setCartitem((prevItems) =>
+            prevItems.map((item) =>
+                item.product === product ? { ...item, count: item.count+1 } : item
+            )
+        );
+    };
+
+    const decreaseCount = (product) => {
+        setCartitem((prevItems) => {
+            const updatedItems = prevItems
+                .map((item) =>
+                    item.product === product ? { ...item, count: Math.max(0, item.count-1) } : item
+                )
+                .filter((item) => item.count > 0);
+
+            return updatedItems;
+        });
+    };
+
     const contextValue = {
-        counter,
-        setCounter,
         count,
         setCount,
         increaseCount,
         decreaseCount,
+        addTocart,
+        cartitem,
     };
 
     return (
