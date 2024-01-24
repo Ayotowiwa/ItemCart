@@ -2,18 +2,25 @@ import React, { useContext, useState } from "react";
 import { Shopcontext } from "../context/Shopcontext";
 
 const ProductCard = (props) => {
-  const { count, increaseCount, decreaseCount, addTocart, cartitem } = useContext(Shopcontext);
+  const { count, increaseCount, decreaseCount, addTocart, setCount } = useContext(Shopcontext);
   const [isClicked, setIsClicked] = useState(false);
 
   const handleAddToCart = () => {
     setIsClicked(true);
+    addTocart(props.name);
   };
   const handleDecrease = () => {
     if (count > 1) {
-        decreaseCount()
+        decreaseCount(props.name)
     } else {
         setIsClicked(false)
     }
+    
+
+  };
+  const handleIncrease = () => {
+    increaseCount(props.name);
+
   }
   return (
     <div className="w-full sm:w-1/2 md:w-1/3 p-3 mb-8 bg-white border rounded-lg shadow-md relative">
@@ -28,7 +35,7 @@ const ProductCard = (props) => {
               -
             </button>
             <span>{count}</span>
-            <button className="bg-green-500 text-white px-4 py-2 rounded" onClick={increaseCount}>
+            <button className="bg-green-500 text-white px-4 py-2 rounded" onClick={handleIncrease}>
               +
             </button>
           </div>

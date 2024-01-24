@@ -3,7 +3,7 @@ import React, { useState, createContext } from 'react';
 export const Shopcontext = createContext(null);
 
 export default function ShopContextProvider(props) {
-    const [count, setCount] = useState(1);
+    const [count, setCount] = useState(0);
     const [cartitem, setCartitem] = useState([]);
 
     const addTocart = (product) => {
@@ -18,6 +18,7 @@ export default function ShopContextProvider(props) {
         } else {
             setCartitem((prevItems) => [...prevItems, {product, count: 1}]);
         }
+        
     };
 
     const increaseCount = (product) => {
@@ -26,6 +27,7 @@ export default function ShopContextProvider(props) {
                 item.product === product ? { ...item, count: item.count+1 } : item
             )
         );
+        
     };
 
     const decreaseCount = (product) => {
