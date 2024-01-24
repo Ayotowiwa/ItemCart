@@ -1,27 +1,16 @@
 import React, { useContext, useState } from "react";
 import { Shopcontext } from "../context/Shopcontext";
+import { Link } from "react-router-dom";
 
 const ProductCard = (props) => {
-  const { count, increaseCount, decreaseCount, addTocart, setCount } = useContext(Shopcontext);
-  const [isClicked, setIsClicked] = useState(false);
+  const { addTocart } = useContext(Shopcontext);
+  const [isClicked, setIsClicked] = useState(null);
 
   const handleAddToCart = () => {
     setIsClicked(true);
-    addTocart(props.name);
+    addTocart(props.cost);
   };
-  const handleDecrease = () => {
-    if (count > 1) {
-        decreaseCount(props.name)
-    } else {
-        setIsClicked(false)
-    }
-    
 
-  };
-  const handleIncrease = () => {
-    increaseCount(props.name);
-
-  }
   return (
     <div className="w-full sm:w-1/2 md:w-1/3 p-3 mb-8 bg-white border rounded-lg shadow-md relative">
       <div className="flex flex-col items-start">
@@ -30,17 +19,16 @@ const ProductCard = (props) => {
       </div>
       <div className="mt-auto absolute bottom-4 right-4">
         {isClicked ? (
-          <div className="flex space-x-2">
-            <button className="bg-red-500 text-white px-4 py-2 rounded" onClick={handleDecrease}>
-              -
+          <Link to="/cart">
+            <button className="bg-red-500 text-white px-4 py-2 rounded">
+              item Added
             </button>
-            <span>{count}</span>
-            <button className="bg-green-500 text-white px-4 py-2 rounded" onClick={handleIncrease}>
-              +
-            </button>
-          </div>
+          </Link>
         ) : (
-          <button className="bg-red-500 text-white px-4 py-2 rounded" onClick={handleAddToCart}>
+          <button
+            className="bg-red-500 text-white px-4 py-2 rounded"
+            onClick={handleAddToCart}
+          >
             Add to cart
           </button>
         )}
@@ -68,7 +56,11 @@ const Homepage = () => {
   return (
     <div className="flex flex-wrap p-2 md:p-6 justify-center">
       {products.map((content) => (
-        <ProductCard key={content.key} name={content.name} cost={content.cost} />
+        <ProductCard
+          key={content.key}
+          name={content.name}
+          cost={content.cost}
+        />
       ))}
     </div>
   );
