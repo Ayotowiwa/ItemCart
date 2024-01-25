@@ -1,11 +1,16 @@
 
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Shopcontext } from '../context/Shopcontext';
 
 const CartPage = () => {
   const { cartitem, setCartitem } = useContext(Shopcontext);
-  
+  const [totalCost, setTotalCost] = useState(0);
+
+  useEffect (() => {
+    const total = cartitem.reduce((acc, item) => acc + (item.cost * item.count), 0);
+    setTotalCost(total);
+  }, [cartitem])
 
   const increaseCount = (product) => {
     setCartitem((prevItems) =>
@@ -30,15 +35,16 @@ const decreaseCount = (product) => {
   
   return (
     <div>
-      <div>
-        <Link to='/'>
+      <div >
+        <Link to='/'  className="block mb-4 font-bold underline" >
           <h1>Return to shop</h1>
         </Link>
       </div>
       <div className='receiver'>
         <h2>Your Cart:</h2>
+        <div className=' min-w-[100%] mb-[30px]'>
         {cartitem.map((item, index) => (
-          <div key={index} className="w-full sm:w-1/2 md:w-1/3 p-3 mb-8 bg-white border rounded-lg shadow-md relative">
+          <div key={index} className="w-full sm:w-1/2 md:w-1/3 p-6 mb-8 bg-white border rounded-lg shadow-md relative">
             <div className="flex flex-col items-start">
               <div className="text-lg font-semibold">{item.name}</div>
               <div className="text-gray-600">Cost: #{item.cost}</div>
@@ -53,9 +59,18 @@ const decreaseCount = (product) => {
                   +
                 </button>
               </div>
+              <div className="font-bold mt-2">
+                Total: #{item.cost * item.count}
+              </div>
             </div>
           </div>
         ))}
+        </div>  
+        <div className=" bottom-0 left-0 right-0 p-4 bg-gray-200 text-center">
+          <button className="bg-green-500 text-white px-8 py-4 rounded-lg">
+            Pay: #{totalCost}
+          </button>
+        </div>
       </div>
     </div>
   );
