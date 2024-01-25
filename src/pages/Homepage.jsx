@@ -3,7 +3,7 @@ import { Shopcontext } from "../context/Shopcontext";
 import { Link } from "react-router-dom";
 
 const ProductCard = (props) => {
-  const { addTocart, setCartitem, cartitem } = useContext(Shopcontext);
+  const { setCartitem, cartitem } = useContext(Shopcontext);
   const [isClicked, setIsClicked] = useState(null);
 
   const handleAddToCart = () => {

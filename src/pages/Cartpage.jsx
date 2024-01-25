@@ -1,11 +1,33 @@
 
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Shopcontext } from '../context/Shopcontext';
 
 const CartPage = () => {
-  const { cartitem, increaseCount, decreaseCount } = useContext(Shopcontext);
+  const { cartitem, setCartitem } = useContext(Shopcontext);
+  
 
+  const increaseCount = (product) => {
+    setCartitem((prevItems) =>
+        prevItems.map((item) =>
+            item.name === product ? { ...item, count: item.count+1 } : item
+        )
+    );
+    
+};
+
+const decreaseCount = (product) => {
+    setCartitem((prevItems) => {
+        const updatedItems = prevItems
+            .map((item) =>
+                item.name === product ? { ...item, count: Math.max(0, item.count-1) } : item
+            )
+            .filter((item) => item.count > 0);
+
+        return updatedItems;
+    });
+};
+  
   return (
     <div>
       <div>
@@ -23,11 +45,11 @@ const CartPage = () => {
             </div>
             <div className="mt-auto absolute bottom-4 right-4">
               <div className="flex space-x-2">
-                <button className="bg-red-500 text-white px-4 py-2 rounded" onClick={() => decreaseCount(item.product)}>
+                <button className="bg-red-500 text-white px-4 py-2 rounded" onClick={() => decreaseCount(item.name)}>
                   -
                 </button>
                 <span>{item.count}</span>
-                <button className="bg-green-500 text-white px-4 py-2 rounded" onClick={() => increaseCount(item.product)}>
+                <button className="bg-green-500 text-white px-4 py-2 rounded" onClick={() => increaseCount(item.name)}>
                   +
                 </button>
               </div>
