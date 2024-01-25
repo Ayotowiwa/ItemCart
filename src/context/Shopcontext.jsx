@@ -6,20 +6,20 @@ export default function ShopContextProvider(props) {
     const [count, setCount] = useState(0);
     const [cartitem, setCartitem] = useState([]);
 
-    const addTocart = (product) => {
-        const existingItem = cartitem.find((item) => item.product === product);
+    // const addTocart = (product) => {
+    //     const existingItem = cartitem.find((item) => item.product === product);
 
-        if(existingItem) {
-            setCartitem((prevItems) => {
-                return prevItems.map((item) => 
-                    item.product === product ? { ...item, count: item.count+1 } : item
-                );
-            });
-        } else {
-            setCartitem((prevItems) => [...prevItems, {product, count: 1}]);
-        }
+    //     if(existingItem) {
+    //         setCartitem((prevItems) => {
+    //             return prevItems.map((item) => 
+    //                 item.product === product ? { ...item, count: item.count+1 } : item
+    //             );
+    //         });
+    //     } else {
+    //         setCartitem((prevItems) => [...prevItems, {product, count: 1}]);
+    //     }
         
-    };
+    // };
 
     const increaseCount = (product) => {
         setCartitem((prevItems) =>
@@ -47,8 +47,8 @@ export default function ShopContextProvider(props) {
         setCount,
         increaseCount,
         decreaseCount,
-        addTocart,
         cartitem,
+        setCartitem
     };
 
     return (

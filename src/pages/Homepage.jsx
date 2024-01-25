@@ -3,12 +3,14 @@ import { Shopcontext } from "../context/Shopcontext";
 import { Link } from "react-router-dom";
 
 const ProductCard = (props) => {
-  const { addTocart } = useContext(Shopcontext);
+  const { addTocart, setCartitem, cartitem } = useContext(Shopcontext);
   const [isClicked, setIsClicked] = useState(null);
 
   const handleAddToCart = () => {
     setIsClicked(true);
-    addTocart(props.cost);
+    if (!cartitem.some((items) => items.name === props.name && items.cost === props.cost)) {
+        setCartitem((prevItems) => [...prevItems, { name: props.name, cost:props.cost, count:1}])
+    };
   };
 
   return (
