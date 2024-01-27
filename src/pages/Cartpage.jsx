@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Shopcontext } from '../context/Shopcontext';
-import axios from 'axios'; // Corrected import statement
+import axios from 'axios'; 
 
 const CartPage = () => {
   const { cartitem, setCartitem } = useContext(Shopcontext);
@@ -12,7 +12,7 @@ const CartPage = () => {
   useEffect (() => {
     const total = cartitem.reduce((acc, item) => acc + (item.cost * item.count), 0);
     setTotalCost(total);
-  }, [cartitem, setTotalCost]); // Added setTotalCost as a dependency
+  }, [cartitem, setTotalCost]); 
 
   const increaseCount = (product) => {
     setCartitem((prevItems) =>
@@ -36,7 +36,7 @@ const CartPage = () => {
 
   const makePayment = async () => {
     const url = "https://api.paystack.co/transaction/initialize";
-    const apiKey = process.env.REACT_APP_SECRET_TEST_KEY;
+    const apiKey = process.env.REACT_APP_SECRET_KEY;
   
     try {
       const response = await axios.post(
@@ -47,7 +47,7 @@ const CartPage = () => {
         },
         {
           headers: {
-            Authorization: apiKey,
+            Authorization: `Bearer ${apiKey}`,
             "Content-Type": "application/json"
           }
         }
