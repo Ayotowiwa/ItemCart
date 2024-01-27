@@ -1,42 +1,68 @@
-
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Shopcontext } from '../context/Shopcontext';
+import axios from 'axios'; // Corrected import statement
 
 const CartPage = () => {
   const { cartitem, setCartitem } = useContext(Shopcontext);
   const [totalCost, setTotalCost] = useState(0);
 
+  const paymentAmount = totalCost * 100
+
   useEffect (() => {
     const total = cartitem.reduce((acc, item) => acc + (item.cost * item.count), 0);
     setTotalCost(total);
-  }, [cartitem])
+  }, [cartitem, setTotalCost]); // Added setTotalCost as a dependency
 
   const increaseCount = (product) => {
     setCartitem((prevItems) =>
         prevItems.map((item) =>
-            item.name === product ? { ...item, count: item.count+1 } : item
+            item.name === product ? { ...item, count: item.count + 1 } : item
         )
     );
-    
-};
+  };
 
-const decreaseCount = (product) => {
+  const decreaseCount = (product) => {
     setCartitem((prevItems) => {
         const updatedItems = prevItems
             .map((item) =>
-                item.name === product ? { ...item, count: Math.max(0, item.count-1) } : item
+                item.name === product ? { ...item, count: Math.max(0, item.count - 1) } : item
             )
             .filter((item) => item.count > 0);
 
         return updatedItems;
     });
-};
+  };
+
+  const makePayment = async () => {
+    const url = "https://api.paystack.co/transaction/initialize";
+    const apiKey = process.env.REACT_APP_SECRET_TEST_KEY;
+  
+    try {
+      const response = await axios.post(
+        url,
+        {
+          'amount': paymentAmount.toString(),
+          'email': "christlightsied@gmail.com"
+        },
+        {
+          headers: {
+            Authorization: apiKey,
+            "Content-Type": "application/json"
+          }
+        }
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
   
   return (
     <div>
       <div >
-        <Link to='/'  className="block mb-4 font-bold underline" >
+        <Link to='/' className="block mb-4 font-bold underline" >
           <h1>Return to shop</h1>
         </Link>
       </div>
@@ -67,7 +93,7 @@ const decreaseCount = (product) => {
         ))}
         </div>  
         <div className=" bottom-0 left-0 right-0 p-4 bg-gray-200 text-center">
-          <button className="bg-green-500 text-white px-8 py-4 rounded-lg">
+          <button onClick={makePayment} className="bg-green-500 text-white px-8 py-4 rounded-lg">
             Pay: #{totalCost}
           </button>
         </div>
